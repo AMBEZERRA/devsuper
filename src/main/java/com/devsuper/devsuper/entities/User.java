@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +19,10 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private String name;
+	
+	// transformando essa coluna em unica tb... impede que se repita os e-mails
+	@Column(unique = true)
+	private String email;
 	private String phone;
 	private LocalDate birthDate;
 	private String password;
@@ -31,9 +36,10 @@ public class User {
 		
 	}
 
-	public User(Long id, String name, String phone, LocalDate birthDate, String password) {
+	public User(Long id, String name,String email, String phone, LocalDate birthDate, String password) {
 		this.id = id;
 		this.name = name;
+		this.email = email;
 		this.phone = phone;
 		this.birthDate = birthDate;
 		this.password = password;
@@ -53,6 +59,15 @@ public class User {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+	
+	
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 
 	public String getPhone() {
