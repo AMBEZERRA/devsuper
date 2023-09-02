@@ -1,6 +1,7 @@
 package com.devsuper.devsuper.entities;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import jakarta.persistence.Column;
@@ -102,6 +103,14 @@ public class Product {
 		return categories;
 	}
 
+	public Set<OrderItem> getItems() {
+		return items;
+	}
+    // metodo alternativo pra ve os 
+	public List<Order> getorders(){
+		return items.stream().map(x -> x.getOrder()).toList();
+	}
+	
 			
 }
 
