@@ -3,15 +3,15 @@ package com.devsuper.devsuper.dto;
 import com.devsuper.devsuper.entities.Product;
 
 public class ProductDTO {
-	
+
 	private Long id;
 	private String name;
 	private String description;
 	private Double price;
 	private String imgUrl;
-	
+
 	public ProductDTO() {
-		
+
 	}
 
 	public ProductDTO(Long id, String name, String description, Double price, String imgUrl) {
@@ -21,8 +21,8 @@ public class ProductDTO {
 		this.price = price;
 		this.imgUrl = imgUrl;
 	}
-	
-	// contrutorr alternativo para facilitar a camda de servico
+
+	// contrutor alternativo para facilitar a camada de servico
 	public ProductDTO(Product entity) {
 		id = entity.getId();
 		name = entity.getName();
@@ -30,10 +30,6 @@ public class ProductDTO {
 		price = entity.getPrice();
 		imgUrl = entity.getImgUrl();
 	}
-	
-	
-	
-	
 
 	// Não se cria SET em DTO ... pois não há a necessidade de alterar os dados
 	public Long getId() {
@@ -55,9 +51,5 @@ public class ProductDTO {
 	public String getImgUrl() {
 		return imgUrl;
 	}
-	
-	
-	
-	
 
 }

@@ -1,8 +1,11 @@
 package com.devsuper.devsuper.services;
 
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -17,7 +20,7 @@ public class ProductService {
 	@Autowired
 	private ProductRepository repository;
 	
-	
+	// metodo para buscar um elmento do banco pelo id (product)
 	@Transactional(readOnly = true) // essa notacao é usada nesse momento para rapidez ja que nao estou salvando nada so consultando
 	public ProductDTO findById(Long id) {
 		Optional<Product> result = repository.findById(id);
@@ -26,5 +29,16 @@ public class ProductService {
 		return dto;
 		
 	}
+	
+	// metodo para retornar uma lista de elemento do banco (pproduct)
+	@Transactional(readOnly = true) // essa notacao é usada nesse momento para rapidez ja que nao estou salvando nada so consultando
+	public Page<ProductDTO> findAll(Pageable pageable) {
+		Page<Product> result = repository.findAll(pageable); // page tipo especial de LIST 
+		return result.map(x -> new ProductDTO(x)); // expressão lambda
+		
+	}
+	
+	
+	
 
 }
