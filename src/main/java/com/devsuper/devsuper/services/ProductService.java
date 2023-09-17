@@ -1,6 +1,5 @@
 package com.devsuper.devsuper.services;
 
-import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,7 +37,21 @@ public class ProductService {
 		
 	}
 	
+	//Criando o metodo de incluir e salvar no DB
 	
+	@Transactional
+	public ProductDTO insert(ProductDTO dto) {
+		Product entity = new Product();
+		entity.setName(dto.getName());
+		entity.setDescription(dto.getDescription());
+		entity.setPrice(dto.getPrice());
+		entity.setImgUrl(dto.getImgUrl());
+		
+		entity = repository.save(entity); // chamando a classe repository pra salvar no DB
+		return new ProductDTO(entity);
+		
+		
+	}
 	
 
 }
