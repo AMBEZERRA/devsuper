@@ -40,29 +40,29 @@ public class ProductService {
 	}
 
 	/*
-	// Criando o metodo de incluir e salvar no DB (Método Padrão)
+	 * // Criando o metodo de incluir e salvar no DB (Método Padrão)
+	 * 
+	 * @Transactional public ProductDTO insert(ProductDTO dto) { Product entity =
+	 * new Product(); entity.setName(dto.getName());
+	 * entity.setDescription(dto.getDescription()); entity.setPrice(dto.getPrice());
+	 * entity.setImgUrl(dto.getImgUrl());
+	 * 
+	 * entity = repository.save(entity); // chamando a classe repository pra salvar
+	 * no DB return new ProductDTO(entity);
+	 * 
+	 * }
+	 */
+
+	// Criando o metodo de incluir e salvar no DB (Método auxiliar sendo usado: boas
+	// práticas)
 	@Transactional
 	public ProductDTO insert(ProductDTO dto) {
 		Product entity = new Product();
-		entity.setName(dto.getName());
-		entity.setDescription(dto.getDescription());
-		entity.setPrice(dto.getPrice());
-		entity.setImgUrl(dto.getImgUrl());
-
+		copyDtoToEntity(dto, entity);
 		entity = repository.save(entity); // chamando a classe repository pra salvar no DB
 		return new ProductDTO(entity);
 
-	} */
-	
-	// Criando o metodo de incluir e salvar no DB (Método auxiliar sendo usado: boas práticas)
-		@Transactional
-		public ProductDTO insert(ProductDTO dto) {
-			Product entity = new Product();
-			copyDtoToEntity(dto, entity);
-			entity = repository.save(entity); // chamando a classe repository pra salvar no DB
-			return new ProductDTO(entity);
-
-		}
+	}
 
 	/*
 	 * // UPDATE atualizando um produto (Método Padrão)
@@ -78,8 +78,6 @@ public class ProductService {
 	 * no DB return new ProductDTO(entity); }
 	 */
 
-	
-		
 	// UpDate (Atualização de um objeto) Método com boas práticas ... Usa um metodo
 	// auxiliar para chamar os atributos
 	@Transactional
@@ -91,7 +89,15 @@ public class ProductService {
 		return new ProductDTO(entity);
 	}
 
-	// Método auxiliar para chamar os atributos da Entity  Product e direcionar para DTO 
+	// metodo para buscar um elmento do banco pelo id (product) DELETANDO
+	@Transactional
+	public void delete(Long id) {
+		repository.deleteById(id);
+
+	}
+
+	// Método auxiliar para chamar os atributos da Entity Product e direcionar para
+	// DTO
 	private void copyDtoToEntity(ProductDTO dto, Product entity) {
 		entity.setName(dto.getName());
 		entity.setDescription(dto.getDescription());
@@ -99,4 +105,5 @@ public class ProductService {
 		entity.setImgUrl(dto.getImgUrl());
 
 	}
+
 }
