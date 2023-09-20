@@ -34,6 +34,7 @@ public class ProductController {
 	} */
 	
 	// Configurando para obter a resposta através do ResponseEntity
+	
 	@GetMapping(value = "/{id}") // mapeou a rota do products // buscando por id
 	public ResponseEntity<ProductDTO> findById(@PathVariable Long id) { 
 		ProductDTO dto = service.findById(id);

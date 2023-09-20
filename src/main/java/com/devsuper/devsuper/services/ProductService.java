@@ -1,7 +1,5 @@
 package com.devsuper.devsuper.services;
 
-import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -11,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.devsuper.devsuper.dto.ProductDTO;
 import com.devsuper.devsuper.entities.Product;
 import com.devsuper.devsuper.repositories.ProductRepository;
-import com.devsuper.devsuper.services.exceptions.ResourceNotFoundexception;
+import com.devsuper.devsuper.services.exceptions.ResourceNotFoundException;
 
 // notação padrao identificando a camada de servico
 @Service
@@ -25,7 +23,7 @@ public class ProductService {
 									// nada so consultando
 	public ProductDTO findById(Long id) {
 		Product product = repository.findById(id)
-				.orElseThrow(() -> new ResourceNotFoundexception("Recurso não encontrado")); // Informando a exception
+				.orElseThrow(() -> new ResourceNotFoundException("Recurso não encontrado")); // Informando a exception
 																								// caso nao ache o id
 		return new ProductDTO(product);
 
