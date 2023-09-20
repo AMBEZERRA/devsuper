@@ -11,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.devsuper.devsuper.dto.ProductDTO;
 import com.devsuper.devsuper.entities.Product;
 import com.devsuper.devsuper.repositories.ProductRepository;
+import com.devsuper.devsuper.services.exceptions.ResourceNotFoundexception;
 
 // notação padrao identificando a camada de servico
 @Service
@@ -23,10 +24,10 @@ public class ProductService {
 	@Transactional(readOnly = true) // essa notacao é usada nesse momento para rapidez ja que nao estou salvando
 									// nada so consultando
 	public ProductDTO findById(Long id) {
-		Optional<Product> result = repository.findById(id);
-		Product product = result.get();
-		ProductDTO dto = new ProductDTO(product);
-		return dto;
+		Product product = repository.findById(id)
+				.orElseThrow(() -> new ResourceNotFoundexception("Recurso não encontrado")); // Informando a exception
+																								// caso nao ache o id
+		return new ProductDTO(product);
 
 	}
 
