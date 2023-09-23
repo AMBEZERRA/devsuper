@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import com.devsuper.devsuper.dto.CustomError;
+import com.devsuper.devsuper.services.exceptions.DatabaseException;
 import com.devsuper.devsuper.services.exceptions.ResourceNotFoundException;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,4 +23,13 @@ public class ControllerExceptionHandler {
 		return ResponseEntity.status(status).body(err);
 		
 	}
+	
+	@ExceptionHandler(DatabaseException.class)
+	public ResponseEntity<CustomError> dataBaseException(DatabaseException e, HttpServletRequest request){
+		HttpStatus status = HttpStatus.BAD_REQUEST;
+		CustomError err = new CustomError(Instant.now(), status.value(), e.getMessage(), request.getRequestURI());
+		return ResponseEntity.status(status).body(err);
+		
+	}
+	
 }

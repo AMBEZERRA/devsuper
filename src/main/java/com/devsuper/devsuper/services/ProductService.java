@@ -1,15 +1,20 @@
 package com.devsuper.devsuper.services;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.devsuper.devsuper.dto.ProductDTO;
 import com.devsuper.devsuper.entities.Product;
 import com.devsuper.devsuper.repositories.ProductRepository;
+import com.devsuper.devsuper.services.exceptions.DatabaseException;
 import com.devsuper.devsuper.services.exceptions.ResourceNotFoundException;
+
+import jakarta.persistence.EntityNotFoundException;
 
 // notação padrao identificando a camada de servico
 @Service
@@ -82,19 +87,34 @@ public class ProductService {
 	@Transactional
 	public ProductDTO update(Long id, ProductDTO dto) {
 
-		Product entity = repository.getReferenceById(id); // instanciando um produto com a referencia do Id informado
-		copyDtoToEntity(dto, entity);
-		entity = repository.save(entity); // chamando a classe repository pra salvar no DB
-		return new ProductDTO(entity);
+		try {
+			Product entity = repository.getReferenceById(id); // instanciando um produto com a referencia do Id
+																// informado
+			copyDtoToEntity(dto, entity);
+			entity = repository.save(entity); // chamando a classe repository pra salvar no DB
+			return new ProductDTO(entity);
+			
+		} catch (EntityNotFoundException e) {
+			throw new ResourceNotFoundException("Recurso não Encontrado");
+		}
 	}
 
+	
 	// metodo para buscar um elmento do banco pelo id (product) DELETANDO
-	@Transactional
+	@Transactional(propagation = Propagation.SUPPORTS) // padrão pra o tipo de erro esperado
 	public void delete(Long id) {
+		if(!repository.existsById(id)) {
+			throw new ResourceNotFoundException("Elemento não encontrado");
+		}
+		try {
 		repository.deleteById(id);
-
+	} catch (DataIntegrityViolationException e){
+		throw new DatabaseException("Falha de integridade referencial");
 	}
+		
+}
 
+	
 	// Método auxiliar para chamar os atributos da Entity Product e direcionar para
 	// DTO
 	private void copyDtoToEntity(ProductDTO dto, Product entity) {
