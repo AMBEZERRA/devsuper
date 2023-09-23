@@ -2,11 +2,24 @@ package com.devsuper.devsuper.dto;
 
 import com.devsuper.devsuper.entities.Product;
 
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
+import jakarta.validation.constraints.Size;
+
 public class ProductDTO {
 
 	private Long id;
+	
+	@Size(min = 3, max = 80, message = "Nome deve ter entre 3 a 80 caracteres")
+	@NotBlank(message = "Campo requerido") // verificar se o campo esta vazio e se deixou espaços em branco
 	private String name;
+	
+	@Size(min = 10, message = "Descrição precisa ter no mínimo 10 caracter")
+	@NotBlank(message = "Campo requerido")
+	
 	private String description;
+	
+	@Positive(message = "o preço tem que ser positivo")
 	private Double price;
 	private String imgUrl;
 

@@ -19,6 +19,8 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import com.devsuper.devsuper.dto.ProductDTO;
 import com.devsuper.devsuper.services.ProductService;
 
+import jakarta.validation.Valid;
+
 // o que for implementado nessa classe vai responder via web
 @RestController
 @RequestMapping(value = "/products") // responde via web nessa rota
@@ -65,7 +67,7 @@ public class ProductController {
 	*/
 	
 	@PostMapping  // mapeou a rota para inserir
-	public ResponseEntity<ProductDTO> insert(@RequestBody ProductDTO dto) {  
+	public ResponseEntity<ProductDTO> insert(@Valid @RequestBody ProductDTO dto) {  
 		dto = service.insert(dto);
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
 				.buildAndExpand(dto.getId()).toUri();
@@ -73,7 +75,7 @@ public class ProductController {
 	}
 	
 	@PutMapping(value = "/{id}") // mapeou a rota do products // buscando por id
-	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @RequestBody ProductDTO dto ) { 
+	public ResponseEntity<ProductDTO> update(@PathVariable Long id, @Valid @RequestBody ProductDTO dto ) { 
 		dto = service.update(id, dto);
 		return ResponseEntity.ok(dto);
 	}
